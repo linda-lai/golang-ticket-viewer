@@ -17,7 +17,8 @@ func basicAuth(username, password string) string {
 
 func getTickets(username, password, subdomain string) string {
 	client := &http.Client{}
-	url := fmt.Sprintf("https://%s.zendesk.com/api/v2/tickets.json", subdomain)
+	pagination := "2"
+	url := fmt.Sprintf("https://%s.zendesk.com/api/v2/tickets.json?per_page=%s", subdomain, pagination)
 	req, err := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("Authorization", "Basic "+basicAuth(username, password))
