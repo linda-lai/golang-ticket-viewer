@@ -5,14 +5,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+	//"os"
 
 	"github.com/joho/godotenv"
+
+	"github.com/linda-lai/golang-ticket-viewer/internal/config"
 )
 
-// func basicAuth(username, password string) string {
-// 	return base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
-// }
 
 func newZendeskClient(url, username, password string) string {
 	// Client is a pointer to an instance of http.Client struct,
@@ -20,7 +19,7 @@ func newZendeskClient(url, username, password string) string {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 
-	// req.Header.Add("Authorization", "Basic "+basicAuth(username, password))
+	//req.Header.Add("Authorization", "Basic "+basicAuth(username, password))
 	req.SetBasicAuth(username, password)
 
 	resp, err := client.Do(req)
@@ -41,7 +40,7 @@ func newZendeskClient(url, username, password string) string {
 }
 
 func getTicketById(username, password, subdomain, ticketId string) string {
-	url := fmt.Sprintf("https://%s.zendesk.com/api/v2/tickets/%s.json", subdomain, ticketId)
+	url :=  fmt.Sprintf("https://%s.zendesk.com/api/v2/tickets/%s.json", subdomain, ticketId)
 
 	return newZendeskClient(url, username, password)
 }
@@ -53,18 +52,23 @@ func getTickets(username, password, subdomain string) string {
 	return newZendeskClient(url, username, password)
 }
 
-func main() {
+func init() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+}
 
-	username := os.Getenv("ZD_USERNAME")
-	password := os.Getenv("ZD_PASSWORD")
-	subdomain := os.Getenv("ZD_SUBDOMAIN")
+func main() {
 
-	// fmt.Println(basicAuth(username, password))
-	fmt.Println(getTickets(username, password, subdomain))
+	config := config.New()
+
+	// Get Ticket By ID
+	fmt.Println(getTicketById(config.Username, config.Password, config.Subdomain, "1"))
+
 	fmt.Println("----------------------------")
-	fmt.Println(getTicketById(username, password, subdomain, "1"))
+
+	// List All Tickets
+	fmt.Println(getTickets(config.Username, config.Password, config.Subdomain))
+
 }
