@@ -1,9 +1,13 @@
 package config
 
 import (
+	"encoding/base64"
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 )
 
+// Zendesk credentials for Basic Auth
 type ZendeskCredentials struct {
 	Username string
 	Password string
@@ -26,3 +30,23 @@ func getEnv(key, defaultEnv string) string {
 
 	return defaultEnv
 }
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
+
+func basicAuth(username, password string) string {
+	auth := username + ":" + password
+	return base64.StdEncoding.EncodeToString([]byte(auth))
+}
+
+func Auth() (string, string) {
+	config := New()
+	subdomain := config.Subdomain
+	auth := basicAuth(config.Username, config.Password)
+	return auth, subdomain
+}
+

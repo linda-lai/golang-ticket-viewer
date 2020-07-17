@@ -1,4 +1,4 @@
-package main
+package zendesk
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/linda-lai/golang-ticket-viewer/internal/api"
 	"github.com/linda-lai/golang-ticket-viewer/internal/config"
+
 )
 
 // type ZendeskTickets struct {
@@ -21,18 +22,13 @@ type ZendeskTicket struct {
 	} `json:"ticket"`
 }
 
-
-func main() {
-
+func getTicket() {
 	// Get Ticket By ID
 	// fmt.Println(api.GetTicketByID(config.Username, config.Password, config.Subdomain, "20"))
 
 	var ticket ZendeskTicket
 
-	credentials, subdomain := config.Auth()
-
-	endpoint := api.GetUrl(subdomain)
-	data := api.GetTicketByID(credentials, endpoint, "1")
+	data := api.GetTicketByID(config.Username, config.Password, config.Subdomain, "1")
 	fmt.Println(data)
 
 	err := json.Unmarshal([]byte(data), &ticket)
@@ -48,8 +44,7 @@ func main() {
 	fmt.Println("----------------------------")
 
 	// // List All Tickets
-	fmt.Println(api.GetTickets(credentials, endpoint))
+	// fmt.Println(api.GetTickets(config.Username, config.Password, config.Subdomain))
 
 	// fmt.Println("hello")
-
 }
