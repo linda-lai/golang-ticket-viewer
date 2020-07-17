@@ -49,7 +49,7 @@ func GetTicketByID(auth, url, ticketID string) string {
 
 // GetTicketByID constructs the endpoint to get all Zendesk tickets
 func GetTickets(auth, url string) string {
-	pagination := "2"
+	pagination := "25"
 	ticketsUrl := fmt.Sprintf("%s.json?per_page=%s", url, pagination)
 
 	return newZendeskClient(ticketsUrl, auth)

@@ -3,6 +3,8 @@ package zendesk
 import (
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"github.com/linda-lai/golang-ticket-viewer/internal/api"
 )
 
@@ -21,9 +23,10 @@ type TicketFields struct {
 	ID int `json:"id,omitempty"`
 	Subject string `json:"subject,omitempty"`
 	Description string `json:"description,omitempty"`
+	CreatedAt time.Time `json:created_at,omitempty`
 }
 
-func UnmarshalZendeskTicket(credentials, endpoint, ticketID string) string {
+func UnmarshalZendeskTicket(credentials, endpoint, ticketID string) TicketPayload {
 	var ticket TicketPayload
 	data := api.GetTicketByID(credentials, endpoint, ticketID)
 
@@ -33,14 +36,14 @@ func UnmarshalZendeskTicket(credentials, endpoint, ticketID string) string {
 		fmt.Println(err)
 	}
 
-	fmt.Println("+++++++++++++++++++++++++++++")
-	fmt.Printf("%+v\n", ticket)
-	fmt.Println("----------------------------")
+	//fmt.Println("+++++++++++++++++++++++++++++")
+	//fmt.Printf("%+v\n", ticket)
+	//fmt.Println("+++++++++++++++++++++++++++++")
 
-	return data
+	return ticket
 }
 
-func UnmarshalZendeskTickets(credentials, endpoint string) string {
+func UnmarshalZendeskTickets(credentials, endpoint string) TicketsPayload {
 	var tickets TicketsPayload
 	data := api.GetTickets(credentials, endpoint)
 	//fmt.Println(data)
@@ -51,10 +54,10 @@ func UnmarshalZendeskTickets(credentials, endpoint string) string {
 		fmt.Println(err)
 	}
 
-	fmt.Println("+++++++++++++++++++++++++++++")
-	fmt.Printf("%+v\n", tickets)
-	fmt.Println("----------------------------")
+	//fmt.Println("+++++++++++++++++++++++++++++")
+	//fmt.Printf("%+v\n", tickets)
+	//fmt.Println("+++++++++++++++++++++++++++++")
 
-	return data
+	return tickets
 
 }
