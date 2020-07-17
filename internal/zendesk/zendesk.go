@@ -3,33 +3,29 @@ package zendesk
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/linda-lai/golang-ticket-viewer/internal/api"
-	"github.com/linda-lai/golang-ticket-viewer/internal/config"
-
 )
 
-// type ZendeskTickets struct {
-// 	count int
-// 	tickets []ZendeskTicketByID
-// }
-
-type ZendeskTicket struct {
-	Ticket struct {
-		ID int `json:"id"`
-		Subject string `json:"subject"`
-		Description string `json:"description"`
-	} `json:"ticket"`
+type TicketsPayload struct {
+	Tickets []TicketFields`json:"tickets",omitempty`
+	NextPage string `json:"next_page",omitempty`
+	PreviousPage string `json:"previous_page",omitempty`
+	Count int `json:count`
 }
 
-func getTicket() {
-	// Get Ticket By ID
-	// fmt.Println(api.GetTicketByID(config.Username, config.Password, config.Subdomain, "20"))
+type TicketPayload struct {
+	Ticket TicketFields `json:"ticket",omitempty`
+}
 
-	var ticket ZendeskTicket
+type TicketFields struct {
+	ID int `json:"id,omitempty"`
+	Subject string `json:"subject,omitempty"`
+	Description string `json:"description,omitempty"`
+}
 
-	data := api.GetTicketByID(config.Username, config.Password, config.Subdomain, "1")
-	fmt.Println(data)
+func UnmarshalZendeskTicket(credentials, endpoint, ticketID string) string {
+	var ticket TicketPayload
+	data := api.GetTicketByID(credentials, endpoint, ticketID)
 
 	err := json.Unmarshal([]byte(data), &ticket)
 
@@ -38,13 +34,27 @@ func getTicket() {
 	}
 
 	fmt.Println("+++++++++++++++++++++++++++++")
-
 	fmt.Printf("%+v\n", ticket)
-
 	fmt.Println("----------------------------")
 
-	// // List All Tickets
-	// fmt.Println(api.GetTickets(config.Username, config.Password, config.Subdomain))
+	return data
+}
 
-	// fmt.Println("hello")
+func UnmarshalZendeskTickets(credentials, endpoint string) string {
+	var tickets TicketsPayload
+	data := api.GetTickets(credentials, endpoint)
+	//fmt.Println(data)
+
+	err := json.Unmarshal([]byte(data), &tickets)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("+++++++++++++++++++++++++++++")
+	fmt.Printf("%+v\n", tickets)
+	fmt.Println("----------------------------")
+
+	return data
+
 }
