@@ -47,8 +47,9 @@ func GetTicketByID(auth, url, ticketID string) string {
 	return newZendeskClient(ticketUrl, auth)
 }
 
-// GetTicketByID constructs the endpoint to get all Zendesk tickets
-func GetTickets(auth, url string) string {
+// ListTickets constructs the endpoint to get all Zendesk tickets,
+// passing it to a new Zendesk client
+func ListTickets(auth, url string) string {
 	pagination := "25"
 	ticketsUrl := fmt.Sprintf("%s.json?per_page=%s", url, pagination)
 

@@ -2,18 +2,21 @@ package config
 
 import (
 	"encoding/base64"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
-// Zendesk credentials for Basic Auth
+// ZendeskCredentials struct for Basic Auth
 type ZendeskCredentials struct {
 	Username string
 	Password string
 	Subdomain string
 }
 
+// New() returns a pointer to an instance of ZendeskCredentials,
+// set to ENV variables or empty string
 func New() *ZendeskCredentials {
 	return &ZendeskCredentials{
 		Username:  getEnv("ZD_USERNAME", ""),
@@ -31,6 +34,10 @@ func getEnv(key, defaultEnv string) string {
 	return defaultEnv
 }
 
+// Load will read your env file(s) and load them into ENV for this process.
+// Call this function as close as possible to the start of your program (ideally in main)
+// If you call Load without any args it will default to loading .env in the current path
+// You can otherwise tell it which files to load (there can be more than one)
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -38,11 +45,15 @@ func init() {
 	}
 }
 
+// basicAuth encodes Zendesk username and passwords
+// to base64 as a string
 func basicAuth(username, password string) string {
-	auth := username + ":" + password
-	return base64.StdEncoding.EncodeToString([]byte(auth))
+	auth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+	return auth
 }
 
+// Auth intialises a new config instance and returns an encoded
+// Basic Auth and a Zendesk subdomain string
 func Auth() (string, string) {
 	config := New()
 	subdomain := config.Subdomain
