@@ -32,9 +32,10 @@ type TicketFields struct {
 
 // UnmarshalZendeskTicket parses the response and maps the returned fields
 // to the TicketPayload
+// ShowTicket returns an instance of the TicketPayload data
 func UnmarshalZendeskTicket(credentials, endpoint, ticketID string) TicketPayload {
 	var ticket TicketPayload
-	data := api.GetTicketByID(credentials, endpoint, ticketID)
+	data, _ := api.GetTicketByID(credentials, endpoint, ticketID)
 
 	err := json.Unmarshal([]byte(data), &ticket)
 
@@ -47,18 +48,12 @@ func UnmarshalZendeskTicket(credentials, endpoint, ticketID string) TicketPayloa
 	return ticket
 }
 
-// ShowTicket returns an instance of the TicketPayload data
-func ShowTicket(credentials, endpoint, ticketID string) TicketPayload {
-	data := UnmarshalZendeskTicket(credentials, endpoint, ticketID)
-
-	return data
-}
-
 // UnmarshalZendeskTickets parses the response and maps the returned fields
 // to the TicketsPayload
+// ListTicketsData returns an instance of the TicketsPayload data
 func UnmarshalZendeskTickets(credentials, endpoint string) TicketsPayload {
 	var tickets TicketsPayload
-	data := api.ListTickets(credentials, endpoint)
+	data, _ := api.ListTickets(credentials, endpoint)
 	//fmt.Println(data)
 
 	err := json.Unmarshal([]byte(data), &tickets)
@@ -71,10 +66,4 @@ func UnmarshalZendeskTickets(credentials, endpoint string) TicketsPayload {
 
 	return tickets
 
-}
-
-// ListTicketsData returns an instance of the TicketsPayload data
-func ListTicketsData(credentials, endpoint string) TicketsPayload {
-	data := UnmarshalZendeskTickets(credentials, endpoint)
-	return data
 }

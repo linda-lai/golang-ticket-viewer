@@ -8,20 +8,34 @@ import (
 	"github.com/joho/godotenv"
 )
 
+const (
+	ZendeskUsernameEnv  = "ZD_USERNAME"
+	ZendeskPasswordEnv  = "ZD_PASSWORD"
+	ZendeskSubdomainEnv = "ZD_SUBDOMAIN"
+	defaultEnv          = ""
+)
+
 // ZendeskCredentials struct for Basic Auth
 type ZendeskCredentials struct {
 	Username string
 	Password string
 	Subdomain string
+	BasicAuth string
 }
 
 // New() returns a pointer to an instance of ZendeskCredentials,
 // set to ENV variables or empty string
 func New() *ZendeskCredentials {
+	username := getEnv(ZendeskUsernameEnv, defaultEnv)
+	password := getEnv(ZendeskPasswordEnv, defaultEnv)
+	subdomain := getEnv(ZendeskSubdomainEnv, defaultEnv)
+	auth := basicAuth(username, password)
+
 	return &ZendeskCredentials{
-		Username:  getEnv("ZD_USERNAME", ""),
-		Password:  getEnv("ZD_PASSWORD", ""),
-		Subdomain: getEnv("ZD_SUBDOMAIN", ""),
+		Username:  username,
+		Password:  password,
+		Subdomain: subdomain,
+		BasicAuth: auth,
 	}
 }
 
@@ -30,7 +44,6 @@ func getEnv(key, defaultEnv string) string {
 	if env, exists := os.LookupEnv(key); exists {
 		return env
 	}
-
 	return defaultEnv
 }
 
@@ -52,12 +65,10 @@ func basicAuth(username, password string) string {
 	return auth
 }
 
-// Auth intialises a new config instance and returns an encoded
-// Basic Auth and a Zendesk subdomain string
-func Auth() (string, string) {
-	config := New()
-	subdomain := config.Subdomain
-	auth := basicAuth(config.Username, config.Password)
-	return auth, subdomain
-}
-
+//// Auth intialises a new config instance and returns an encoded
+//// Basic Auth and a Zendesk subdomain string
+//func Auth() *ZendeskCredentials {
+//	config := New()
+//	return config
+//}
+//

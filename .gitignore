@@ -2,3 +2,5 @@
 /.idea
 /.vscode
 DEPLOY.md
+index.js
+/ignore

@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/linda-lai/golang-ticket-viewer/internal/api"
+	"github.com/linda-lai/golang-ticket-viewer/internal/config"
+	"github.com/linda-lai/golang-ticket-viewer/internal/zendesk"
 
 	"github.com/linda-lai/golang-ticket-viewer/internal/cli"
 	//"github.com/linda-lai/golang-ticket-viewer/internal/zendesk"
@@ -12,17 +15,23 @@ var text = "Enim qui elit minim cillum qui nisi deserunt ex excepteur nulla ex s
 
 func main() {
 	// Initialise config
-	//credentials, subdomain := config.Auth()
-	//endpoint := api.GetUrl(subdomain)
+	config := config.New()
+	auth := config.BasicAuth
+	endpoint := api.GetUrl(config.Subdomain)
 
 	// Show Ticket By ID
-	//ticketID := "20"
-	//ticket := zendesk.ShowTicket(credentials, endpoint, ticketID)
-	//fmt.Println(cli.ShowTicket(ticket))
+	ticketID := "20"
+	ticket := zendesk.UnmarshalZendeskTicket(
+		auth,
+		endpoint,
+		ticketID)
+	fmt.Println(cli.ShowTicket(ticket))
 
 	// List All Tickets
-	//var tickets = zendesk.ListTicketsData(credentials, endpoint)
-	//fmt.Println(cli.ViewAllTickets(tickets))
+	var tickets = zendesk.UnmarshalZendeskTickets(
+		auth,
+		endpoint)
+	fmt.Println(cli.ViewAllTickets(tickets))
 
 	fmt.Println(cli.WordWrap(text, 20))
 
