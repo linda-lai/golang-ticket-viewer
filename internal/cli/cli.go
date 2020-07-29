@@ -15,7 +15,7 @@ func ShowTicket(payload zendesk.TicketPayload) string {
 
 }
 
-func ListAllTickets(payload zendesk.TicketsPayload) string {
+func ViewAllTickets(payload zendesk.TicketsPayload) string {
 	values := map[string]string{"ticketID": "TICKET ID", "subject": "SUBJECT", "createdAt": "CREATED AT"}
 	header := fmt.Sprintf("| %-10v || %-55v || %-31v|", values["ticketID"], values["subject"], values["createdAt"])
 
