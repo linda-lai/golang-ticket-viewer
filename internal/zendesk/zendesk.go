@@ -10,10 +10,10 @@ import (
 
 // TicketsPayload contains all tickets data returned from Zendesk API
 type TicketsPayload struct {
-	Tickets []TicketFields`json:"tickets,omitempty"`
-	NextPage string `json:"next_page,omitempty"`
-	PreviousPage string `json:"previous_page,omitempty"`
-	Count int `json:"count,omitempty"`
+	Tickets      []TicketFields `json:"tickets,omitempty"`
+	NextPage     string         `json:"next_page,omitempty"`
+	PreviousPage string         `json:"previous_page,omitempty"`
+	Count        int            `json:"count,omitempty"`
 }
 
 // TicketPayload contains a single ticket's data returned from Zendesk API
@@ -24,10 +24,10 @@ type TicketPayload struct {
 // TicketFields contains ticket fields and details nested in the
 // TicketPayload or TicketsPayload
 type TicketFields struct {
-	ID int `json:"id,omitempty"`
-	Subject string `json:"subject,omitempty"`
-	Description string `json:"description,omitempty"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
+	ID          int       `json:"id,omitempty"`
+	Subject     string    `json:"subject,omitempty"`
+	Description string    `json:"description,omitempty"`
+	CreatedAt   time.Time `json:"created_at,omitempty"`
 }
 
 // UnmarshalZendeskTicket parses the response and maps the returned fields

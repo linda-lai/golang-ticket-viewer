@@ -17,8 +17,8 @@ const (
 
 // ZendeskCredentials struct for Basic Auth
 type ZendeskCredentials struct {
-	Username string
-	Password string
+	Username  string
+	Password  string
 	Subdomain string
 	BasicAuth string
 }

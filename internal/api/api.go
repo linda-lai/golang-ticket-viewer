@@ -16,7 +16,7 @@ var (
 // an http.Request and returns either a pointer to a response or error.
 // This is the exact API of the existing http.Client's Do function.
 type HTTPClient interface {
-	 Do(req *http.Request) (*http.Response, error)
+	Do(req *http.Request) (*http.Response, error)
 }
 
 func init() {
@@ -32,9 +32,8 @@ func newZendeskClient(url, auth string) (*http.Response, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("Authorization", "Basic " + auth)
+	req.Header.Add("Authorization", "Basic "+auth)
 	//req.SetBasicAuth(username, password)
-
 
 	if err != nil {
 		log.Fatal(err)
@@ -50,7 +49,7 @@ func GetUrl(subdomain string) string {
 
 // GetTicketByID constructs the endpoint to get a Zendesk ticket by ID
 func GetTicketByID(auth, url, ticketID string) (string, error) {
-	ticketUrl :=  fmt.Sprintf("%s/%s.json", url, ticketID)
+	ticketUrl := fmt.Sprintf("%s/%s.json", url, ticketID)
 	resp, err := newZendeskClient(ticketUrl, auth)
 
 	defer resp.Body.Close()
