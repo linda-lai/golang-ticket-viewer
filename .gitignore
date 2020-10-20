@@ -1,6 +1,8 @@
 .env
 /.idea
 /.vscode
-DEPLOY.md
 index.js
 /ignore
+.DS_Store
+DEPLOY.md
+FEEDBACK.md
